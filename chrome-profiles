@@ -15,6 +15,7 @@ function init() {
 			
 			if [[ "$2" != "" ]]; then
 				chromebaseprofiledir="$2"
+				echo "updating config file";
 				echo "chromebaseprofiledir=\"$2\"" >$appconfigfile
 			else
 				if [[ -f "$appconfigfile" ]]; then
