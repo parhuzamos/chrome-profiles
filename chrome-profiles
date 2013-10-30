@@ -67,9 +67,9 @@ function setup() {
 	echo -e "\n$app - Preparing for first run...\n";
 
 	echo "Your new Google Chrome profiles will be stored in \"$profilesdir\", each sub-directory in it is a profile.";
-	if [[ ! -d "$defaultprofile""3" ]]; then
+	if [[ ! -d "$defaultprofile" ]]; then
 		echo -n "Copying current Google Chrome profile to \"default-profile\" ($defaultprofile): ";
-		cp -r "$chromebaseprofiledir" "${defaultprofile}""2";
+		cp -r "$chromebaseprofiledir" "${defaultprofile}";
 		echo "Done.";
 	else
 		echo "Warning: \"default-profile\" ($defaultprofile) already exists, not copying current Google Chrome profile.";
