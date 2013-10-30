@@ -31,7 +31,7 @@ function init() {
 				echo "";
 				echo "    $app setup directory-with-the-files-above";
 				echo ""
-				echo "Like: $app setup $configdir/google-chrome";
+				echo "Like: $app setup $chromebaseprofiledir";
 				echo "";
 				echo "Exiting.";
 				exit 1;
@@ -80,12 +80,12 @@ function setup() {
 
 function main() {
 	new="<<<Create New>>>";
-	entries=`ls "$profilesdir"`;
+	entries=$(ls "$profilesdir");
 	profile=$(echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "$app" --text "Select a profile to launch:" | awk -F\|  '{print ""$1""}')
 	echo "-$profile-";
 	if [[ "$profile" ]]; then
 		if [[ "$profile" == "$new" ]]; then
-			profile=`zenity --entry --title "$app" --text "Enter a new profile name:"`;
+			profile=$(zenity --entry --title "$app" --text "Enter a new profile name:");
 			if [[ "$profile" ]]; then
 				echo "Creating $profile...";
 				if [ ! -d "$profilesdir/$profile" ]; then
