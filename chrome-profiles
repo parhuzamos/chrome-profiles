@@ -21,6 +21,7 @@ function init() {
 					source "$appconfigfile";
 				fi;
 			fi;
+			echo "chromebaseprofiledir: $chromebaseprofiledir";
 			if [[ ! -d "$chromebaseprofiledir" ]]; then
 				echo "Error: Could not find the default Google Chrome profile for the current user. Missing directory: \"$chromebaseprofiledir\"";
 				echo "To fix this, manually find a directory containing files like these:";
