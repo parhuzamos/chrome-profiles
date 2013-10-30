@@ -15,14 +15,12 @@ function init() {
 			
 			if [[ "$2" != "" ]]; then
 				chromebaseprofiledir="$2"
-				echo "updating config file";
 				echo "chromebaseprofiledir=\"$2\"" >$appconfigfile
 			else
 				if [[ -f "$appconfigfile" ]]; then
 					source "$appconfigfile";
 				fi;
 			fi;
-			echo "chromebaseprofiledir: $chromebaseprofiledir";
 			if [[ ! -d "$chromebaseprofiledir" ]]; then
 				echo "Error: Could not find the default Google Chrome profile for the current user. Missing directory: \"$chromebaseprofiledir\"";
 				echo "To fix this, manually find a directory containing files like these:";
@@ -83,7 +81,8 @@ function setup() {
 function main() {
 	new="<<<Create New>>>";
 	entries=`ls "$profilesdir"`;
-	profile=`echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "$app" --text "Select a profile to launch:"`
+	profile=$(echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "$app" --text "Select a profile to launch:" | awk -F\|  '{print ""$1""}')
+	echo "-$profile-";
 	if [[ "$profile" ]]; then
 		if [[ "$profile" == "$new" ]]; then
 			profile=`zenity --entry --title "$app" --text "Enter a new profile name:"`;
@@ -105,7 +104,7 @@ function main() {
 }
 
 
-init
+init "$1" "$2"
 if [[ "$1" == "setup" ]]; then
 	setup
 fi;
