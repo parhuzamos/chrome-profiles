@@ -1,22 +1,109 @@
 #!/bin/bash
-new="<<<Create New>>>";
-entries=`ls $HOME/.config/google-chrome-app/`;
-profile=`echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "chrome-profiles" --text "Select a profile to launch:"`
-if [[ "$profile" ]]; then
-	if [[ "$profile" == "$new" ]]; then
-		profile=`zenity --entry --title "chrome-profiles" --text "Enter a new profile name:"`;
-		if [[ "$profile" ]]; then
-			echo "Creating $profile...";
-			if [ ! -d "$HOME/.config/google-chrome-app/$profile" ]; then
-				cp -r $HOME/.config/google-chrome-app/skeleton "$HOME/.config/google-chrome-app/$profile"
-			fi
-		else
+
+function init() {
+	app="chrome-profiles"
+	case $OSTYPE in 
+		linux-gnu )
+			configdir="$HOME/.config"
+			appconfigfile="$configdir/$app/default.conf";
+			mkdir -p "$appconfigdir" &>/dev/null
+			profilesdir="$configdir/google-chrome-profiles";
+			mkdir -p "$profilesdir" &>/dev/null
+			defaultprofile="$profilesdir/default";
+			chromebaseprofiledir="$configdir/google-chrome";
+			
+			if [[ "$2" != "" ]]; then
+				chromebaseprofiledir="$2"
+				echo "chromebaseprofiledir=\"$2\"" >$appconfigfile
+			else
+				if [[ -f "$appconfigfile" ]]; then
+					source "$appconfigfile";
+				fi;
+			fi;
+			if [[ ! -d "$chromebaseprofiledir" ]]; then
+				echo "Error: Could not find the default Google Chrome profile for the current user. Missing directory: \"$chromebaseprofiledir\"";
+				echo "To fix this, manually find a directory containing files like these:";
+				echo "Local State";
+				echo "Safe Browsing*";
+				echo "";
+				echo "Then restart $app setup like this:";
+				echo "";
+				echo "    $app setup directory-with-the-files-above";
+				echo ""
+				echo "Like: $app setup $configdir/google-chrome";
+				echo "";
+				echo "Exiting.";
+				exit 1;
+			fi;
+			;;
+		darwin* ) 
+			# Mac
+			# /Users/username-here/Library/Application Support/Google/Chrome
+			# Where is panels.ini for midnight-commander?
+			echo "Error: Not supported yet.";
+			echo "Exiting.";
 			exit 1;
-		fi;
+			;; 
+		cygwin )
+			echo "Error: Not supported yet.";
+			echo "Exiting.";
+			exit 1;
+			;;
+		win32 )
+			echo "Error: Not supported yet.";
+			echo "Exiting.";
+			exit 1;
+			;;
+		freebsd )
+			echo "Error: Not supported yet.";
+			echo "Exiting.";
+			exit 1;
+			;;
+	esac;
+}
+
+function setup() {
+	echo -e "\n$app - Preparing for first run...\n";
+
+	echo "Your new Google Chrome profiles will be stored in \"$profilesdir\", each sub-directory in it is a profile.";
+	if [[ ! -d "$defaultprofile""3" ]]; then
+		echo -n "Copying current Google Chrome profile to \"default-profile\" ($defaultprofile): ";
+		cp -r "$chromebaseprofiledir" "${defaultprofile}""2";
+		echo "Done.";
+	else
+		echo "Warning: \"default-profile\" ($defaultprofile) already exists, not copying current Google Chrome profile.";
 	fi;
-	echo "Selected profile: $profile.";
-	google-chrome "--app=$profile" --restore-last-session "--user-data-dir=$HOME/.config/google-chrome-app/$profile"
-else
-	echo "No profile selected.";
-	exit 1;
+	echo "";
+	echo "Setup done, starting $app...";
+}
+
+function main() {
+	new="<<<Create New>>>";
+	entries=`ls "$profilesdir"`;
+	profile=`echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "$app" --text "Select a profile to launch:"`
+	if [[ "$profile" ]]; then
+		if [[ "$profile" == "$new" ]]; then
+			profile=`zenity --entry --title "$app" --text "Enter a new profile name:"`;
+			if [[ "$profile" ]]; then
+				echo "Creating $profile...";
+				if [ ! -d "$profilesdir/$profile" ]; then
+					cp -r "$defaultprofile" "$profilesdir/$profile"
+				fi
+			else
+				exit 1;
+			fi;
+		fi;
+		echo "Selected profile: $profile.";
+		google-chrome "--app=$profile" --restore-last-session "--user-data-dir=$profilesdir/$profile"
+	else
+		echo "No profile selected.";
+		exit 1;
+	fi;
+}
+
+
+init
+if [[ "$1" == "setup" ]]; then
+	setup
 fi;
+main

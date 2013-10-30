@@ -41,6 +41,7 @@ TODO
 * Write some notes about the skeleton/base directory
 * Implement creation of skeleton directory from the current config
 * Profile directory configuration
+* Mac support
 
 Environment
 -----------
