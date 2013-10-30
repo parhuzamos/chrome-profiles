@@ -5,7 +5,8 @@ function init() {
 	case $OSTYPE in 
 		linux-gnu )
 			configdir="$HOME/.config"
-			appconfigfile="$configdir/$app/default.conf";
+			appconfigdir="$configdir/$app";
+			appconfigfile="$appconfigdir/default.conf";
 			mkdir -p "$appconfigdir" &>/dev/null
 			profilesdir="$configdir/google-chrome-profiles";
 			mkdir -p "$profilesdir" &>/dev/null
