@@ -64,7 +64,7 @@ function init() {
 }
 
 function setup() {
-	echo -e "\n$app - Preparing for first run...\n";
+	echo -e "\n$app - Preparing things...\n";
 
 	echo "Your new Google Chrome profiles will be stored in \"$profilesdir\", each sub-directory in it is a profile.";
 	if [[ ! -d "$defaultprofile" ]]; then
@@ -82,21 +82,21 @@ function main() {
 	new="<<<Create New>>>";
 	entries=$(ls "$profilesdir");
 	profile=$(echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "$app" --text "Select a profile to launch:" | awk -F\|  '{print ""$1""}')
-	echo "-$profile-";
 	if [[ "$profile" ]]; then
 		if [[ "$profile" == "$new" ]]; then
 			profile=$(zenity --entry --title "$app" --text "Enter a new profile name:");
 			if [[ "$profile" ]]; then
 				echo "Creating $profile...";
 				if [ ! -d "$profilesdir/$profile" ]; then
-					cp -r "$defaultprofile" "$profilesdir/$profile"
+					echo "Copying default files...";
+					cp -r "$defaultprofile" "$profilesdir/$profile";
 				fi
 			else
 				exit 1;
 			fi;
 		fi;
 		echo "Selected profile: $profile.";
-		google-chrome "--app=$profile" --restore-last-session "--user-data-dir=$profilesdir/$profile"
+		google-chrome "--app=$profile" --restore-last-session "--user-data-dir=$profilesdir/$profile" &
 	else
 		echo "No profile selected.";
 		exit 1;
