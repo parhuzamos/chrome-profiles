@@ -1,21 +1,22 @@
 #!/bin/bash
 new="<<<Create New>>>";
-entries=$(ls $HOME/.config/google-chrome-app/);
+configdir=$HOME/.config/google-chrome-app/
+entries=$(ls ${configdir});
 profile=$(echo -e "$new\n$entries" | zenity --list --column "Profile" --height 400 --title "chrome-profiles" --text "Select a profile to launch:")
 if [[ "$profile" ]]; then
 	if [[ "$profile" == "$new" ]]; then
 		profile=$(zenity --entry --title "chrome-profiles" --text "Enter a new profile name:");
 		if [[ "$profile" ]]; then
 			echo "Creating $profile...";
-			if [ ! -d "$HOME/.config/google-chrome-app/$profile" ]; then
-				cp -r $HOME/.config/google-chrome-app/skeleton "$HOME/.config/google-chrome-app/$profile"
+			if [ ! -d "${configdir}$profile" ]; then
+				cp -r ${configdir}skeleton "${configdir}$profile"
 			fi
 		else
 			exit 1;
 		fi;
 	fi;
 	echo "Selected profile: $profile.";
-	google-chrome "--app=$profile" --restore-last-session "--user-data-dir=$HOME/.config/google-chrome-app/$profile"
+	google-chrome "--app=$profile" --restore-last-session "--user-data-dir=${configdir}$profile"
 else
 	echo "No profile selected.";
 	exit 1;
