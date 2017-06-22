@@ -1,5 +1,5 @@
-chrome-profiles 
-===============  
+chrome-profiles v0.3
+====================
   
 **A quick&important note: currently there is no error checking, no setup, no configuration. It just works.**
 
