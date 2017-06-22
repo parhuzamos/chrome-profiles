@@ -1,6 +1,6 @@
 #!/bin/bash
 new="<<<Create New>>>";
-configdir=${HOME}/.config/google-chrome-app/
+configdir=${HOME}/.config/google-chrome-profiles/
 entries=$(ls ${configdir});
 profile=$(echo -e "${new}\n${entries}" | zenity --list --column "Profile" --height 400 --title "chrome-profiles" --text "Select a profile to launch:")
 if [[ "${profile}" ]]; then
