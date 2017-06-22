@@ -35,7 +35,7 @@ function main {
 			if [[ "${profile}" ]]; then
 				echo "Creating ${profile}...";
 				if [ ! -d "${configdir}${profile}" ]; then
-					cp -r ${configdir}skeleton "${configdir}${profile}"
+					cp -r ${configdir}skeleton "${configdir}${profile}" | zenity --progress --pulsate --auto-kill --auto-close --no-cancel --text "Copying..." --width 400
 				fi
 			else
 				exit 1;
