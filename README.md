@@ -50,13 +50,18 @@ Currently Linux. But it could be ported easily to other platforms.
 Dependecies
 -----------
 
-* [zenity](https://help.gnome.org/users/zenity/stable/) - to provide GUI for selection and text entry  
-    Install it with your favourite package manager.  
+* [zenity](https://help.gnome.org/users/zenity/stable/) - to provide text entry and progress
+    Install it with your favourite package manager.
     For Ubuntu:
-        sudo apt-get install zenity
-
-        
-...
+    ```
+    sudo apt-get install zenity
+    ```
+* [dmenu](http://tools.suckless.org/dmenu/) - to provide GUI for selection
+    Part of the *suckless-tools* package. Install it with your favourite package manager.
+    For Ubuntu:
+    ```
+    sudo apt-get install dmenu
+    ```
 ---
 
 If you made this far, buy me a drink:
